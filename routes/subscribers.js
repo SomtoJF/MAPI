@@ -29,8 +29,41 @@ router
 
 router
 	.route("/:id")
-	.get((req, res) => {})
-	.delete((req, res) => {})
-	.patch((req, res) => {});
+	.get(getSubscriber, (req, res) => {
+		res.status(200).json(res.subscriber);
+	})
+	.delete(getSubscriber, async (req, res) => {
+		try {
+			const response = await Subscriber.deleteOne(res.subscriber);
+			res.status(200).json(response);
+		} catch (err) {
+			res.status(500).json({ message: err.message });
+		}
+	})
+	.patch(getSubscriber, async (req, res) => {
+		try {
+			const response = await Subscriber.updateOne(res.subscriber, {
+				name: "Somtochukwu",
+			});
+			res.status(200).json(response);
+		} catch (err) {
+			res.status(400).json({ message: err.message });
+		}
+	});
+
+async function getSubscriber(req, res, next) {
+	let subscriber;
+	try {
+		subscriber = await Subscriber.findById(req.params.id);
+		if (subscriber === null) {
+			return res.status(404).json({ message: "Subscriber not found" });
+		}
+	} catch (err) {
+		return res.status(500).json({ message: err.message });
+	}
+
+	res.subscriber = subscriber;
+	next();
+}
 
 module.exports = router;
