@@ -41,10 +41,12 @@ router
 		}
 	})
 	.patch(getSubscriber, async (req, res) => {
+		if (req.body.name) res.subscriber.name = req.body.name;
+		if (req.body.subscribedToChannel)
+			res.subscriber.subscribedToChannel = req.body.subscribedToChannel;
+
 		try {
-			const response = await Subscriber.updateOne(res.subscriber, {
-				name: "Somtochukwu",
-			});
+			const response = await res.subscriber.save();
 			res.status(200).json(response);
 		} catch (err) {
 			res.status(400).json({ message: err.message });

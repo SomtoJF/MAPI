@@ -21,3 +21,9 @@ DELETE  http://localhost:3000/subscribers/655677f233a521f100772ebc
 
 ###
 PATCH  http://localhost:3000/subscribers/6556726696ec42437a43d45a
+Content-Type: application/json
+
+{
+    "name": "Somtochukwu Jeremy",
+    "subscribedToChannel": "Equity .Inc"
+}
