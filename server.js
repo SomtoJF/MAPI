@@ -5,17 +5,15 @@ const port = 3000;
 const mongoose = require("mongoose");
 
 async function connectDB() {
-	console.log("connecting...");
-	await mongoose.connect(process.env.DATABASE_URL);
-	const db = mongoose.connection;
-	db.on("error", (error) => {
-		console.error(error);
-	});
-
-	db.once("open", () => {
+	try {
+		console.log("connecting...");
+		await mongoose.connect(process.env.DATABASE_URL);
 		console.log("Connection established");
-	});
+	} catch (err) {
+		console.error(err);
+	}
 }
+
 connectDB();
 
 app.use(express.json());
